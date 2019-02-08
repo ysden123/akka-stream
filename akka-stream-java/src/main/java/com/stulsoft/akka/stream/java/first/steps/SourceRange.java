@@ -28,14 +28,15 @@ public class SourceRange {
 
     public static void main(String[] args) {
         logger.info("==>main");
-        final ActorSystem system = ActorSystem.create("QuickStart");
+        final ActorSystem system = ActorSystem.create("JavaSourceRange");
         final Materializer materializer = ActorMaterializer.create(system);
 
         final Source<Integer, NotUsed> source = Source.range(1, 10);
-        source.runForeach(System.out::println, materializer);
 
         final CompletionStage<Done> done = source.runForeach(System.out::println, materializer);
+
         done.thenRun(system::terminate);
+
         logger.info("<==main");
     }
 }
