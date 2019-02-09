@@ -1,0 +1,12 @@
+= akka-stream
+
+Playing with Akka Stream
+
+== Java and Scala
+The project contains two modules:
+
+* akka-stream-java - playing with Akka Stream on Java
+* akka-stream-scala - playing with Akka Stream on Scala
+
+== References
+1. https://doc.akka.io/docs/akka/2.5/stream/stream-quickstart.html[First steps]
