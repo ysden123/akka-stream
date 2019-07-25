@@ -25,7 +25,9 @@ object SourceRangeWithSink extends App with LazyLogging {
 
   source
     .runWith(sink)
-    .onComplete(_ => system.terminate)
+    .onComplete(_ => {
+      logger.info("<==main")
+      system.terminate
+    })
 
-  logger.info("<==main")
 }

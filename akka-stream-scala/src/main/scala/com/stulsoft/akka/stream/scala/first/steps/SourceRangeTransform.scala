@@ -22,7 +22,17 @@ import scala.concurrent.ExecutionContextExecutor
   */
 object SourceRangeTransform extends App with LazyLogging {
   logger.info("==>main")
-  val system = ActorSystem.create("ScalaSourceRange")
+  val testFolder = "test"
+  val testFolderFile = Paths.get(testFolder).toFile
+  if (!testFolderFile.exists()) {
+    try {
+      testFolderFile.mkdir()
+    } catch {
+      case e: Exception => logger.error("Cannot create directory {} - {}", testFolder, e.getMessage)
+        System.exit(1)
+    }
+  }
+  val system = ActorSystem.create("SourceRangeTransform")
   val materializer = ActorMaterializer.create(system)
 
   val source = Source[Int](1 to 10)
@@ -37,8 +47,8 @@ object SourceRangeTransform extends App with LazyLogging {
       .runWith(FileIO.toPath(Paths.get("test/factorials.txt")))(materializer)
 
   implicit val ec: ExecutionContextExecutor = system.dispatcher
-  result.onComplete(_ => system.terminate())
-
-  logger.info("<==main")
-
+  result.onComplete(_ => {
+    logger.info("<==main")
+    system.terminate()
+  })
 }

@@ -27,7 +27,8 @@ object SourceRangeWithFlow extends App with LazyLogging {
   source
     .via(flow)
     .runWith(sink)
-    .onComplete(_ => system.terminate)
-
-  logger.info("<==main")
+    .onComplete(_ => {
+      system.terminate
+      logger.info("<==main")
+    })
 }

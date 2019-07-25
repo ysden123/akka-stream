@@ -27,7 +27,7 @@ object SourceRange extends App with LazyLogging {
   val done = source.runForeach(println)(materializer)
 
   implicit val ec: ExecutionContextExecutor = system.dispatcher
-  done.onComplete(_ ⇒ system.terminate())
+  done.onComplete(_ => system.terminate())
 
   logger.info("<==main")
 }
