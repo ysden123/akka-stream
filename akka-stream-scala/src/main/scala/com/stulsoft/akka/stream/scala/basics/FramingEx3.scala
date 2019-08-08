@@ -4,6 +4,7 @@
 
 package com.stulsoft.akka.stream.scala.basics
 
+import java.io.File
 import java.nio.file.Paths
 
 import akka.actor.ActorSystem
@@ -12,6 +13,7 @@ import akka.stream.scaladsl.{FileIO, Framing}
 import akka.util.ByteString
 
 import scala.concurrent.ExecutionContextExecutor
+import scala.util.{Failure, Success}
 
 /** Reads from a file with new lines (Windows)
  *
@@ -23,11 +25,17 @@ object FramingEx3 extends App {
   implicit val dispatcher: ExecutionContextExecutor = system.dispatcher
   implicit val materializer: ActorMaterializer = ActorMaterializer()
 
-
-  FileIO.fromPath(Paths.get("src/main/resources/testInputFile2.txt"))
-    .via(Framing.delimiter(ByteString("."), Int.MaxValue))
-    .map(_.utf8String)
-    .map(_.replace("\n", ""))
-    .runForeach(println)
-    .onComplete(_ => system.terminate())
+  val fileName = "testInputFile2.txt"
+  Utils.pathFromResource(fileName) match {
+    case Success(path) =>
+      FileIO.fromPath(path)
+        .via(Framing.delimiter(ByteString("."), Int.MaxValue))
+        .map(_.utf8String)
+        .map(_.replace("\n", ""))
+        .runForeach(println)
+        .onComplete(_ => system.terminate())
+    case Failure(ex) =>
+      println(s"Cannot find resource $fileName - ${ex.getMessage}")
+      system.terminate()
+  }
 }
