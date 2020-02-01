@@ -6,11 +6,11 @@ package com.stulsoft.akka.stream.scala.composition
 
 import akka.Done
 import akka.actor.ActorSystem
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import akka.stream.scaladsl.{Keep, Sink, Source}
 
-import scala.concurrent.{Await, ExecutionContextExecutor, Future, Promise}
 import scala.concurrent.duration._
+import scala.concurrent.{Await, ExecutionContextExecutor, Future, Promise}
 import scala.util.{Failure, Success}
 
 /** Composition
@@ -22,7 +22,7 @@ import scala.util.{Failure, Success}
  */
 object CompositionEx1 extends App {
   implicit val actorSystem: ActorSystem = ActorSystem("CompositionEx1")
-  implicit val actorMaterializer: ActorMaterializer = ActorMaterializer()
+  implicit val actorMaterializer:Materializer = Materializer.createMaterializer(actorSystem)
   implicit val ec: ExecutionContextExecutor = actorSystem.dispatcher
 
   val f1 = test1()

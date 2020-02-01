@@ -7,7 +7,7 @@ package com.stulsoft.akka.stream.scala.first.steps
 import java.nio.file.Paths
 
 import akka.actor.ActorSystem
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import akka.stream.scaladsl._
 import akka.util.ByteString
 import com.typesafe.scalalogging.LazyLogging
@@ -33,7 +33,7 @@ object SourceRangeTransform extends App with LazyLogging {
     }
   }
   val system = ActorSystem.create("SourceRangeTransform")
-  val materializer = ActorMaterializer.create(system)
+  implicit val materializer:Materializer = Materializer.createMaterializer(system)
 
   val source = Source[Int](1 to 10)
 

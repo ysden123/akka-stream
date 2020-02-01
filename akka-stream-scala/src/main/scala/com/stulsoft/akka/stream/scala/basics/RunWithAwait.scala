@@ -6,18 +6,16 @@ package com.stulsoft.akka.stream.scala.basics
 
 import akka.Done
 import akka.actor.ActorSystem
-import akka.stream.ActorMaterializer
 import akka.stream.scaladsl.{Keep, Sink, Source}
 
-import scala.concurrent.{Await, Future}
 import scala.concurrent.duration._
+import scala.concurrent.{Await, Future}
 
 /**
  * @author Yuriy Stul
  */
 object RunWithAwait extends App {
   implicit val actorSystem: ActorSystem = ActorSystem("RunWithAwait")
-  implicit val actorMaterializer: ActorMaterializer = ActorMaterializer()
 
   val items = Seq("1111", "2222", "3333", "2 1111", "2 2222", "2 3333")
   test1()

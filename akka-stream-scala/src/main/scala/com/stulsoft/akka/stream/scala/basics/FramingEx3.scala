@@ -4,11 +4,7 @@
 
 package com.stulsoft.akka.stream.scala.basics
 
-import java.io.File
-import java.nio.file.Paths
-
 import akka.actor.ActorSystem
-import akka.stream.ActorMaterializer
 import akka.stream.scaladsl.{FileIO, Framing}
 import akka.util.ByteString
 
@@ -23,7 +19,6 @@ object FramingEx3 extends App {
   println("==>FramingEx3")
   implicit val system: ActorSystem = ActorSystem("FramingEx3")
   implicit val dispatcher: ExecutionContextExecutor = system.dispatcher
-  implicit val materializer: ActorMaterializer = ActorMaterializer()
 
   val fileName = "testInputFile2.txt"
   Utils.pathFromResource(fileName) match {

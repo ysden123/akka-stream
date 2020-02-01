@@ -8,11 +8,12 @@ import java.io.File
 import java.nio.file.Paths
 
 import akka.actor.ActorSystem
-import akka.stream.{ActorMaterializer, IOResult}
+import akka.stream.IOResult
 import akka.stream.scaladsl.{FileIO, Keep}
 
-import scala.concurrent.{Await, ExecutionContextExecutor, Future}
 import scala.concurrent.duration._
+import scala.concurrent.{Await, ExecutionContextExecutor, Future}
+import scala.util.{Failure, Success}
 
 /**
  * @author Yuriy Stul
@@ -20,7 +21,6 @@ import scala.concurrent.duration._
 object CopyFile extends App {
   val workFolder = "work"
   implicit val actorSystem: ActorSystem = ActorSystem("CopyFile")
-  implicit val actorMaterializer: ActorMaterializer = ActorMaterializer()
   implicit val ec: ExecutionContextExecutor = actorSystem.dispatcher
 
   createWorkFolder()
@@ -48,10 +48,12 @@ object CopyFile extends App {
 
     val result = Await.result(future, 5.seconds)
 
-    if (result.wasSuccessful)
-      println(s"Success: result.status = ${result.status.get}, result.count = ${result.count}")
-    else
-      println(s"Failure: result.status = ${result.status},  result.getError: ${result.getError}")
+    result.status match {
+      case Success(_) =>
+        println(s"Success: result.status = ${result.status.get}, result.count = ${result.count}")
+      case Failure(exception) =>
+        println(s"Failure: result.status = ${result.status},  exception: $exception")
+    }
     println("<==copyFile1")
   }
 
@@ -66,10 +68,12 @@ object CopyFile extends App {
 
     val result = Await.result(future, 5.seconds)
 
-    if (result.wasSuccessful)
-      println(s"Success: result.status = ${result.status.get}, result.count = ${result.count}")
-    else
-      println(s"Failure: result.status = ${result.status},  result.getError: ${result.getError}")
+    result.status match {
+      case Success(_) =>
+        println(s"Success: result.status = ${result.status.get}, result.count = ${result.count}")
+      case Failure(exception) =>
+        println(s"Failure: result.status = ${result.status},  exception: $exception")
+    }
     println("<==copyFile2")
   }
 
@@ -86,16 +90,20 @@ object CopyFile extends App {
     val result: List[IOResult] = Await.result(futureAll, 5.seconds)
 
     val inResult = result.head
-    if (inResult.wasSuccessful)
-      println(s"Success: inResult.status = ${inResult.status.get}, inResult.count = ${inResult.count}")
-    else
-      println(s"Failure: inResult.status = ${inResult.status},  inResult.getError: ${inResult.getError}")
+    inResult.status match {
+      case Success(_) =>
+        println(s"Success: inResult.status = ${inResult.status.get}, inResult.count = ${inResult.count}")
+      case Failure(exception) =>
+        println(s"Failure: inResult.status = ${inResult.status},  exception: $exception")
+    }
 
     val outResult = result.last
-    if (outResult.wasSuccessful)
-      println(s"Success: outResult.status = ${outResult.status.get}, outResult.count = ${outResult.count}")
-    else
-      println(s"Failure: outResult.status = ${outResult.status},  outResult.getError: ${outResult.getError}")
+    outResult.status match {
+      case Success(_) =>
+        println(s"Success: outResult.status = ${outResult.status.get}, outResult.count = ${outResult.count}")
+      case Failure(exception) =>
+        println(s"Failure: outResult.status = ${outResult.status},  exception: $exception")
+    }
 
     println("<==copyFile3")
   }

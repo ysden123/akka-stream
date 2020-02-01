@@ -5,12 +5,11 @@
 package com.stulsoft.akka.stream.scala.basics
 
 import akka.actor.ActorSystem
-import akka.stream.ActorMaterializer
-import akka.stream.javadsl.RunnableGraph
-import akka.stream.scaladsl.{Keep, Sink, Source}
+import akka.stream.Materializer
+import akka.stream.scaladsl.{Sink, Source}
 
-import scala.concurrent.{Await, ExecutionContextExecutor, Future}
 import scala.concurrent.duration._
+import scala.concurrent.{Await, ExecutionContextExecutor}
 
 /** SinkForEach
  *
@@ -18,7 +17,8 @@ import scala.concurrent.duration._
  */
 object SinkForEach extends App {
   val system = ActorSystem.create("TwoRunnable")
-  implicit val materializer: ActorMaterializer = ActorMaterializer.create(system)
+
+  implicit val materializer:Materializer = Materializer.createMaterializer(system)
   implicit val ec: ExecutionContextExecutor = system.dispatcher
 
   test1()
