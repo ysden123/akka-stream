@@ -50,9 +50,9 @@ object CopyFile extends App {
 
     result.status match {
       case Success(_) =>
-        println(s"Success: result.status = ${result.status.get}, result.count = ${result.count}")
+        println(s"Success: result.count = ${result.count}")
       case Failure(exception) =>
-        println(s"Failure: result.status = ${result.status},  exception: $exception")
+        println(s"Failure:  exception: $exception")
     }
     println("<==copyFile1")
   }
@@ -70,9 +70,9 @@ object CopyFile extends App {
 
     result.status match {
       case Success(_) =>
-        println(s"Success: result.status = ${result.status.get}, result.count = ${result.count}")
+        println(s"Success: result.count = ${result.count}")
       case Failure(exception) =>
-        println(s"Failure: result.status = ${result.status},  exception: $exception")
+        println(s"Failure:  exception: $exception")
     }
     println("<==copyFile2")
   }
@@ -92,17 +92,17 @@ object CopyFile extends App {
     val inResult = result.head
     inResult.status match {
       case Success(_) =>
-        println(s"Success: inResult.status = ${inResult.status.get}, inResult.count = ${inResult.count}")
+        println(s"Success: inResult.count = ${inResult.count}")
       case Failure(exception) =>
-        println(s"Failure: inResult.status = ${inResult.status},  exception: $exception")
+        println(s"Failure:  exception: $exception")
     }
 
     val outResult = result.last
     outResult.status match {
       case Success(_) =>
-        println(s"Success: outResult.status = ${outResult.status.get}, outResult.count = ${outResult.count}")
+        println(s"Success: outResult.count = ${outResult.count}")
       case Failure(exception) =>
-        println(s"Failure: outResult.status = ${outResult.status},  exception: $exception")
+        println(s"Failure: exception: $exception")
     }
 
     println("<==copyFile3")
