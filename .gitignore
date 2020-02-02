@@ -7,3 +7,5 @@ target/
 *.iml
 
 test/
+
+akka-stream-scala/work/

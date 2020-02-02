@@ -5,7 +5,7 @@
 package com.stulsoft.akka.stream.scala.first.steps
 
 import akka.actor.ActorSystem
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import akka.stream.scaladsl._
 import com.typesafe.scalalogging.LazyLogging
 
@@ -20,14 +20,13 @@ import scala.concurrent.ExecutionContextExecutor
 object SourceRange extends App with LazyLogging {
   logger.info("==>main")
   val system = ActorSystem.create("ScalaSourceRange")
-  val materializer = ActorMaterializer.create(system)
-
+  implicit val materializer:Materializer = Materializer.createMaterializer(system)
   val source = Source[Int](1 to 10)
 
   val done = source.runForeach(println)(materializer)
 
   implicit val ec: ExecutionContextExecutor = system.dispatcher
-  done.onComplete(_ ⇒ system.terminate())
+  done.onComplete(_ => system.terminate())
 
   logger.info("<==main")
 }

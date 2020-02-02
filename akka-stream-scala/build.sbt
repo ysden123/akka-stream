@@ -1,17 +1,17 @@
 import sbt.Keys.libraryDependencies
 
-lazy val akkaVersion = "2.5.17"
-lazy val scalatestVersion = "3.0.5"
-lazy val scalaLoggingVersion = "3.9.0"
+lazy val akkaVersion = "2.6.3"
+lazy val scalaLoggingVersion = "3.9.2"
 lazy val logbackClassicVersion = "1.2.3"
 
 lazy val commonSettings = Seq(
   organization := "com.stulsoft",
-  version := "1.0.0",
+  version := "1.0.1",
   javacOptions ++= Seq("-source", "11"),
-  scalaVersion := "2.12.8",
+  scalaVersion := "2.13.1",
   scalacOptions ++= Seq(
     "-feature",
+    "-deprecation",
     "-language:implicitConversions",
     "-language:postfixOps"),
   libraryDependencies ++= Seq(
@@ -20,8 +20,7 @@ lazy val commonSettings = Seq(
     "com.typesafe.akka" %% "akka-slf4j" % akkaVersion,
     "com.typesafe.scala-logging" %% "scala-logging" % scalaLoggingVersion,
     "ch.qos.logback" % "logback-classic" % logbackClassicVersion,
-    "com.typesafe.akka" %% "akka-testkit" % akkaVersion,
-    "org.scalatest" %% "scalatest" % scalatestVersion % "test"
+    "com.typesafe.akka" %% "akka-testkit" % akkaVersion
   )
 )
 

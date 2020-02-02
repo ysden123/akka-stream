@@ -5,20 +5,20 @@
 package com.stulsoft.akka.stream.scala.first.steps
 
 import akka.actor.ActorSystem
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import akka.stream.scaladsl.{Flow, Sink, Source}
 import com.typesafe.scalalogging.LazyLogging
 
 import scala.concurrent.ExecutionContextExecutor
 
 /** Simple flow: source -> flow1 -> flow2 -> sink (Sink.head)
-  *
-  * @author Yuriy Stul
-  */
+ *
+ * @author Yuriy Stul
+ */
 object SourceRangeCalculator extends App with LazyLogging {
   logger.info("==>main")
   val system = ActorSystem.create("SourceRangeCalculator")
-  implicit val materializer: ActorMaterializer = ActorMaterializer.create(system)
+  implicit val materializer: Materializer = Materializer.createMaterializer(system)
   implicit val ec: ExecutionContextExecutor = system.dispatcher
 
   val source = Source[Int](1 to 10)

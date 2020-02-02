@@ -6,8 +6,8 @@ package com.stulsoft.akka.stream.scala.graph.dsl
 
 import akka.NotUsed
 import akka.actor.ActorSystem
+import akka.stream.ClosedShape
 import akka.stream.scaladsl.{Broadcast, Flow, GraphDSL, Merge, RunnableGraph, Sink, Source}
-import akka.stream.{ActorMaterializer, ClosedShape}
 import com.typesafe.scalalogging.LazyLogging
 
 /** Akka Stream Graph
@@ -18,7 +18,6 @@ object AkkaStreamsGraphApp extends App with LazyLogging {
   logger.info("==>main")
 
   implicit val actorSystem: ActorSystem = ActorSystem("NumberSystem")
-  implicit val materializer: ActorMaterializer = ActorMaterializer()
   val graph = RunnableGraph.fromGraph(GraphDSL.create() {
     implicit builder: GraphDSL.Builder[NotUsed] =>
       import GraphDSL.Implicits._
