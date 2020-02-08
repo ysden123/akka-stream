@@ -13,7 +13,6 @@ import akka.stream.scaladsl.{FileIO, Keep}
 
 import scala.concurrent.duration._
 import scala.concurrent.{Await, ExecutionContextExecutor, Future}
-import scala.util.{Failure, Success}
 
 /**
  * @author Yuriy Stul
@@ -27,7 +26,6 @@ object CopyFile extends App {
   copyFile1()
   copyFile2()
   copyFile3()
-  //  copyFileWithError()
 
   actorSystem.terminate()
 
@@ -35,6 +33,13 @@ object CopyFile extends App {
     val file = new File(workFolder)
     if (!file.exists())
       file.mkdir()
+  }
+
+  def showResult(result: IOResult): Unit = {
+    if (result.count > 0)
+      println(s"Success: result.count = ${result.count}")
+    else
+      println(s"Failure")
   }
 
   // Keep.left
@@ -46,14 +51,8 @@ object CopyFile extends App {
     val runnableGraph = source.to(sink)
     val future = runnableGraph.run()
 
-    val result = Await.result(future, 5.seconds)
+    showResult(Await.result(future, 5.seconds))
 
-    result.status match {
-      case Success(_) =>
-        println(s"Success: result.count = ${result.count}")
-      case Failure(exception) =>
-        println(s"Failure:  exception: $exception")
-    }
     println("<==copyFile1")
   }
 
@@ -66,14 +65,8 @@ object CopyFile extends App {
     val runnableGraph = source.toMat(sink)(Keep.right)
     val future = runnableGraph.run()
 
-    val result = Await.result(future, 5.seconds)
+    showResult(Await.result(future, 5.seconds))
 
-    result.status match {
-      case Success(_) =>
-        println(s"Success: result.count = ${result.count}")
-      case Failure(exception) =>
-        println(s"Failure:  exception: $exception")
-    }
     println("<==copyFile2")
   }
 
@@ -89,42 +82,10 @@ object CopyFile extends App {
     val futureAll = Future.sequence(List(future._1, future._2))
     val result: List[IOResult] = Await.result(futureAll, 5.seconds)
 
-    val inResult = result.head
-    inResult.status match {
-      case Success(_) =>
-        println(s"Success: inResult.count = ${inResult.count}")
-      case Failure(exception) =>
-        println(s"Failure:  exception: $exception")
-    }
+    showResult(result.head) // inResult
 
-    val outResult = result.last
-    outResult.status match {
-      case Success(_) =>
-        println(s"Success: outResult.count = ${outResult.count}")
-      case Failure(exception) =>
-        println(s"Failure: exception: $exception")
-    }
+    showResult(result.last) // outResult
 
     println("<==copyFile3")
   }
-
-  // todo catch exception!
-  /*
-    def copyFileWithError(): Unit = {
-      println("==>copyFileWithError")
-      val source = FileIO
-        .fromPath(new File("src/main/resources/testInputFileERROR.txt").toPath)
-      val sink = FileIO.toPath(Paths.get(s"$workFolder/testFile-copy.txt"))
-      val runnableGraph = source.to(sink)
-      val future = runnableGraph.run()
-  
-      val result = Await.result(future, 5.seconds)
-  
-      if (result.wasSuccessful)
-        println(s"Success: result.status = ${result.status.get}, result.count = ${result.count}")
-      else
-        println(s"Failure: result.status = ${result.status},  result.getError: ${result.getError}")
-      println("<==copyFileWithError")
-    }
-  */
 }
