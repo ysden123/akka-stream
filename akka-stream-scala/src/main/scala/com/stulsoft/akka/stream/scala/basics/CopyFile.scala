@@ -9,7 +9,8 @@ import java.nio.file.Paths
 
 import akka.actor.ActorSystem
 import akka.stream.IOResult
-import akka.stream.scaladsl.{FileIO, Keep}
+import akka.stream.scaladsl.{FileIO, Keep, Sink, Source}
+import akka.util.ByteString
 
 import scala.concurrent.duration._
 import scala.concurrent.{Await, ExecutionContextExecutor, Future}
@@ -45,11 +46,7 @@ object CopyFile extends App {
   // Keep.left
   def copyFile1(): Unit = {
     println("==>copyFile1")
-    val source = FileIO
-      .fromPath(new File("src/main/resources/testInputFile.txt").toPath)
-    val sink = FileIO.toPath(Paths.get(s"$workFolder/testFile-copy.txt"))
-    val runnableGraph = source.to(sink)
-    val future = runnableGraph.run()
+    val future = fileSource().to(fileSink()).run()
 
     showResult(Await.result(future, 5.seconds))
 
@@ -59,11 +56,7 @@ object CopyFile extends App {
   // Keep.right
   def copyFile2(): Unit = {
     println("==>copyFile2")
-    val source = FileIO
-      .fromPath(new File("src/main/resources/testInputFile.txt").toPath)
-    val sink = FileIO.toPath(Paths.get(s"$workFolder/testFile-copy.txt"))
-    val runnableGraph = source.toMat(sink)(Keep.right)
-    val future = runnableGraph.run()
+    val future = fileSource().toMat(fileSink())(Keep.right).run()
 
     showResult(Await.result(future, 5.seconds))
 
@@ -73,11 +66,7 @@ object CopyFile extends App {
   // Keep.both
   def copyFile3(): Unit = {
     println("==>copyFile3")
-    val source = FileIO
-      .fromPath(new File("src/main/resources/testInputFile.txt").toPath)
-    val sink = FileIO.toPath(Paths.get(s"$workFolder/testFile-copy.txt"))
-    val runnableGraph = source.toMat(sink)(Keep.both)
-    val future = runnableGraph.run()
+    val future = fileSource().toMat(fileSink())(Keep.both).run()
 
     val futureAll = Future.sequence(List(future._1, future._2))
     val result: List[IOResult] = Await.result(futureAll, 5.seconds)
@@ -88,4 +77,16 @@ object CopyFile extends App {
 
     println("<==copyFile3")
   }
+
+  def fileSource(): Source[ByteString, Future[IOResult]] = {
+    FileIO
+      .fromPath(new File("src/main/resources/testInputFile222.txt").toPath)
+
+    //      .fromPath(new File("src/main/resources/testInputFile.txt").toPath)
+  }
+
+  def fileSink(): Sink[ByteString, Future[IOResult]] = {
+    FileIO.toPath(Paths.get(s"$workFolder/testFile-copy.txt"))
+  }
+
 }
