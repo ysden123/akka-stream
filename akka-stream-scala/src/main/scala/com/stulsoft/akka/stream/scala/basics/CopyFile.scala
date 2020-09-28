@@ -80,9 +80,7 @@ object CopyFile extends App {
 
   def fileSource(): Source[ByteString, Future[IOResult]] = {
     FileIO
-      .fromPath(new File("src/main/resources/testInputFile222.txt").toPath)
-
-    //      .fromPath(new File("src/main/resources/testInputFile.txt").toPath)
+          .fromPath(new File("src/main/resources/testInputFile.txt").toPath)
   }
 
   def fileSink(): Sink[ByteString, Future[IOResult]] = {

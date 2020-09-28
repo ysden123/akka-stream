@@ -8,13 +8,13 @@ import akka.NotUsed
 import akka.actor.ActorSystem
 import akka.stream.ClosedShape
 import akka.stream.scaladsl.{Broadcast, Flow, GraphDSL, Merge, RunnableGraph, Sink, Source}
-import com.typesafe.scalalogging.LazyLogging
+import com.typesafe.scalalogging.StrictLogging
 
 /** Akka Stream Graph
   *
   * @author Yuriy Stul
   */
-object AkkaStreamsGraphApp extends App with LazyLogging {
+object AkkaStreamsGraphApp extends App with StrictLogging {
   logger.info("==>main")
 
   implicit val actorSystem: ActorSystem = ActorSystem("NumberSystem")

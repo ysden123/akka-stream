@@ -10,7 +10,7 @@ import akka.actor.ActorSystem
 import akka.stream.Materializer
 import akka.stream.scaladsl._
 import akka.util.ByteString
-import com.typesafe.scalalogging.LazyLogging
+import com.typesafe.scalalogging.StrictLogging
 
 import scala.concurrent.ExecutionContextExecutor
 
@@ -20,7 +20,7 @@ import scala.concurrent.ExecutionContextExecutor
   *
   * @author Yuriy Stul
   */
-object SourceRangeTransform extends App with LazyLogging {
+object SourceRangeTransform extends App with StrictLogging {
   logger.info("==>main")
   val testFolder = "test"
   val testFolderFile = Paths.get(testFolder).toFile

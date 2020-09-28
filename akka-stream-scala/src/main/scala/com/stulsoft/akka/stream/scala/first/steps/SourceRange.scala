@@ -7,7 +7,7 @@ package com.stulsoft.akka.stream.scala.first.steps
 import akka.actor.ActorSystem
 import akka.stream.Materializer
 import akka.stream.scaladsl._
-import com.typesafe.scalalogging.LazyLogging
+import com.typesafe.scalalogging.StrictLogging
 
 import scala.concurrent.ExecutionContextExecutor
 
@@ -17,7 +17,7 @@ import scala.concurrent.ExecutionContextExecutor
   *
   * @author Yuriy Stul
   */
-object SourceRange extends App with LazyLogging {
+object SourceRange extends App with StrictLogging {
   logger.info("==>main")
   val system = ActorSystem.create("ScalaSourceRange")
   implicit val materializer:Materializer = Materializer.createMaterializer(system)
