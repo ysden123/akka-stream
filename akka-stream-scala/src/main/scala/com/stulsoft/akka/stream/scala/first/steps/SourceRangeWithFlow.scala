@@ -11,7 +11,7 @@ import com.typesafe.scalalogging.StrictLogging
 
 import scala.concurrent.ExecutionContextExecutor
 
-/** Simple flow: source -> flow -> sink
+/** Simple graph: source -> flow -> sink
  *
  * @author Yuriy Stul
  */

@@ -1,0 +1,10 @@
+= jewish-calendar
+
+Работает с API на сервере www.hebcal.com.
+Смотри https://www.hebcal.com/home/category/developers[Currently Viewing Posts in Developers, APIs, RSS Feeds, Source Code]
+
+== Как построить
+Выполнить команду
+```
+sbt clean dist
+```

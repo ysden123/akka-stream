@@ -39,12 +39,12 @@ object SourceRangeTransform extends App with StrictLogging {
 
   val factorials = source.scan(BigInt(1))((acc, next) => acc * next)
 
-  source.runForeach(println)(materializer)
+  source.runForeach(println)
 
   val result =
     factorials
-      .map(num => ByteString(s"num\n"))
-      .runWith(FileIO.toPath(Paths.get("test/factorials.txt")))(materializer)
+      .map(num => ByteString(s"$num\n"))
+      .runWith(FileIO.toPath(Paths.get("test/factorials.txt")))
 
   implicit val ec: ExecutionContextExecutor = system.dispatcher
   result.onComplete(_ => {

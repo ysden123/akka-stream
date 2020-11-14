@@ -1,13 +1,12 @@
 import sbt.Keys.libraryDependencies
 
-lazy val akkaVersion = "2.6.9"
+lazy val akkaVersion = "2.6.10"
 lazy val scalaLoggingVersion = "3.9.2"
-//lazy val logbackClassicVersion = "1.2.3"
-lazy val loggingVersion = "2.13.3"
+lazy val loggingVersion = "2.14.0"
 
 lazy val commonSettings = Seq(
   organization := "com.stulsoft",
-  version := "1.0.1",
+  version := "1.0.2",
   javacOptions ++= Seq("-source", "11"),
   scalaVersion := "2.13.3",
   scalacOptions ++= Seq(
