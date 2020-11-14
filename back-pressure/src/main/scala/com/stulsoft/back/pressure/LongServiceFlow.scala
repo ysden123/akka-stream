@@ -11,23 +11,29 @@ import akka.stream.scaladsl.Flow
 import akka.util.Timeout
 import com.typesafe.scalalogging.StrictLogging
 
-import scala.concurrent.Await
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.DurationInt
+import scala.concurrent.{Future, Promise}
+import scala.util.Success
 
 /**
  * @author Yuriy Stul
  */
-object LongServiceFlow extends StrictLogging {
-  def flow(longService: ActorRef): Flow[String, String, NotUsed] = {
-    implicit val timeout: Timeout = Timeout(10 seconds)
-    Flow[String].map(msg => {
-      val future = longService ? LongService.Message(msg)
-      val result = Await.result(future, 10 seconds)
-      result match {
-        case response: String =>
-          logger.debug("response: {}", response)
-          response
+class LongServiceFlow(val longService: ActorRef) extends StrictLogging {
+  implicit val timeout: Timeout = Timeout(10 seconds)
+
+  def flow(): Flow[String, String, NotUsed] = {
+    Flow[String].mapAsync[String](1)(msg => callLongService(msg))
+  }
+
+  private def callLongService(msg: String): Future[String] = {
+    val promise = Promise[String]
+    (longService ? LongService.Message(msg))
+      .onComplete {
+        case Success(response: String) =>
+          promise.success(response)
       }
-    })
+
+    promise.future
   }
 }

@@ -16,7 +16,7 @@ import scala.concurrent.duration.DurationInt
 object DataSource extends StrictLogging {
   def source(): Source[String, Cancellable] = {
     var counter = 0L
-    Source.tick[String](0.seconds, 500.milliseconds, "test")
+    Source.tick[String](0.seconds, 100.milliseconds, "test")
       .map(s => {
         counter += 1
         s"$s $counter"

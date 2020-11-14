@@ -21,7 +21,7 @@ object Application extends App with StrictLogging {
   val longService = system.actorOf(Props(new LongService), "LongService")
 
   val source = DataSource.source()
-  val flow = LongServiceFlow.flow(longService)
+  val flow = new LongServiceFlow(longService).flow()
   val sink = DataSink.sink()
   source.via(flow).runWith(sink)(materializer)
 

@@ -21,7 +21,7 @@ class LongService extends Actor with ActorLogging {
     case Message(msg) =>
       log.info("Started handling {}", msg)
       val theSender = sender()
-      context.system.scheduler.scheduleOnce((1 + random.nextInt(5)) seconds) {
+      context.system.scheduler.scheduleOnce((123 + random.nextInt(1000)) milliseconds) {
         val response = s"Response for $msg"
         log.info("Sending response: {}", response)
         theSender ! response
