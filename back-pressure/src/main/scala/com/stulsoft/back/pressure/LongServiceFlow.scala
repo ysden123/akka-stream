@@ -14,7 +14,7 @@ import com.typesafe.scalalogging.StrictLogging
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.DurationInt
 import scala.concurrent.{Future, Promise}
-import scala.util.Success
+import scala.util.{Failure, Success}
 
 /**
  * @author Yuriy Stul
@@ -27,11 +27,12 @@ class LongServiceFlow(val longService: ActorRef) extends StrictLogging {
   }
 
   private def callLongService(msg: String): Future[String] = {
-    val promise = Promise[String]
+    val promise = Promise[String]()
     (longService ? LongService.Message(msg))
       .onComplete {
         case Success(response: String) =>
           promise.success(response)
+        case _ =>
       }
 
     promise.future
