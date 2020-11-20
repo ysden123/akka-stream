@@ -6,9 +6,9 @@ lazy val loggingVersion = "2.14.0"
 
 lazy val commonSettings = Seq(
   organization := "com.stulsoft",
-  version := "1.0.2",
+  version := "1.0.3",
   javacOptions ++= Seq("-source", "11"),
-  scalaVersion := "2.13.3",
+  scalaVersion := "2.13.4",
   scalacOptions ++= Seq(
     "-feature",
     "-deprecation",
