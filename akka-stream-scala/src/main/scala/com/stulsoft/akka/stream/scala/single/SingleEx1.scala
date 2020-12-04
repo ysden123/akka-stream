@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020. Webpals
+ * Copyright (c) 2020. StulSoft
  */
 
 package com.stulsoft.akka.stream.scala.single
